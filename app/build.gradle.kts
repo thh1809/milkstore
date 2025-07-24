@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.cardview)
+    implementation(libs.material)
 
     implementation(libs.appcompat)
     implementation("com.google.android.material:material:1.11.0")
@@ -45,15 +47,19 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.legacy.support.v4)
 
+    implementation(libs.lottie)
+
+
+
+
     // Networking
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.retrofit.converter.scalars)
 
     // STOMP + RxJava
-    implementation(libs.stomp)
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
+
+
 
     // Room
     implementation(libs.room.runtime)

@@ -1,82 +1,68 @@
 package com.milkstoremobile_fronend.viewmodels;
 
 import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.milkstoremobile_fronend.api.ApiClient;
-import com.milkstoremobile_fronend.api.services.MessageApiService;
-import com.milkstoremobile_fronend.models.message.MessageRequest;
-import com.milkstoremobile_fronend.models.message.MessageResponse;
-import java.util.List;
+import com.milkstoremobile_fronend.api.services.AiApiService;
+import com.milkstoremobile_fronend.models.message.MessageAIRequest;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MessageViewModel extends ViewModel {
-    private final MutableLiveData<List<MessageResponse>> messages = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
-    private final MessageApiService apiService = ApiClient.getMessageApiService();
 
-    public LiveData<List<MessageResponse>> getMessages() {
-        return messages;
+    private final MutableLiveData<String> aiAnswer = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+
+    private final AiApiService aiApiService = ApiClient.getAiApiService();
+
+    public LiveData<String> getAiAnswer() {
+        return aiAnswer;
     }
 
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
 
-    // KHÔNG phân trang, chỉ truyền userId và adminId
-    public void fetchMessages(String userId, String adminId) {
-        if (userId == null || userId.trim().isEmpty() || adminId == null || adminId.trim().isEmpty()) {
-            messages.postValue(null);
+    public void askAi(String question) {
+        if (question == null || question.trim().isEmpty()) {
+            aiAnswer.postValue("Vui lòng nhập câu hỏi.");
             return;
         }
 
         isLoading.postValue(true);
-        Log.d("Chat", "Gọi API lấy tin nhắn với userId: " + userId + ", adminId: " + adminId);
-        apiService.getMessages(userId, adminId).enqueue(new Callback<List<MessageResponse>>() {
-            @Override
-            public void onResponse(Call<List<MessageResponse>> call, Response<List<MessageResponse>> response) {
-                Log.d("Chat", "API lấy tin nhắn: " + response.body());
-                isLoading.postValue(false);
+        Log.d("AI", "Gửi câu hỏi: " + question);
 
+        MessageAIRequest request = new MessageAIRequest(question);
+
+        aiApiService.recommendMilk(request).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                isLoading.postValue(false);
                 if (response.isSuccessful() && response.body() != null) {
-                    messages.postValue(response.body());
+                    try {
+                        String result = response.body().string();
+                        aiAnswer.postValue(result);
+                    } catch (Exception e) {
+                        aiAnswer.postValue("Lỗi đọc dữ liệu phản hồi từ AI.");
+                        Log.e("AI", "Lỗi đọc response", e);
+                    }
                 } else {
-                    messages.postValue(null);
+                    aiAnswer.postValue("AI không có phản hồi.");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<MessageResponse>> call, Throwable t) {
-                Log.e("Chat", "Lỗi lấy tin nhắn: " + t.getMessage());
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 isLoading.postValue(false);
-                t.printStackTrace();
-                messages.postValue(null);
-            }
-        });
-    }
-
-    public void sendMessage(MessageRequest messageRequest, Runnable onSuccess) {
-        if (messageRequest == null) {
-            return;
-        }
-
-        isLoading.postValue(true);
-        apiService.sendMessage(messageRequest).enqueue(new Callback<MessageResponse>() {
-            @Override
-            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
-                isLoading.postValue(false);
-                if (response.isSuccessful()) {
-                    onSuccess.run();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MessageResponse> call, Throwable t) {
-                isLoading.postValue(false);
-                t.printStackTrace();
+                aiAnswer.postValue("Lỗi khi kết nối AI: " + t.getMessage());
+                Log.e("AI", "Lỗi kết nối", t);
             }
         });
     }

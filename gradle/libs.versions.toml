@@ -1,9 +1,11 @@
 [versions]
 agp = "8.9.1"
+cardview = "1.0.0"
+material = "1.11.0"
 
 # AndroidX & UI
 appcompat = "1.7.0"
-material = "1.12.0"
+
 activity = "1.10.1"
 constraintlayout = "2.2.1"
 recyclerview = "1.3.1"
@@ -13,11 +15,7 @@ legacySupportV4 = "1.0.0"
 retrofit = "2.9.0"
 retrofitScalars = "2.9.0"
 
-# STOMP & Rx
-stomp = "1.6.6"
 
-rxjava = "2.2.21"
-rxandroid = "2.1.1"
 
 # Room
 room = "2.5.2"
@@ -31,6 +29,12 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
 [libraries]
+
+cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+
+
+lottie = { module = "com.airbnb.android:lottie", version = "6.1.0" }
+
 # Core UI
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -52,12 +56,7 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
-# STOMP & Rx
-#stomp = { group = "ua.naiksoftware", name = "stomp-android", version.ref = "stomp" }
-stomp = { module = "com.github.NaikSoftware:StompProtocolAndroid", version = "1.6.6" }
 
-rxjava = { group = "io.reactivex.rxjava2", name = "rxjava", version.ref = "rxjava" }
-rxandroid = { group = "io.reactivex.rxjava2", name = "rxandroid", version.ref = "rxandroid" }
 
 
 # Testing
