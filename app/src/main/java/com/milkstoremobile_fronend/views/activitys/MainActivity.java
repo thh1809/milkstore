@@ -1,17 +1,15 @@
 package com.milkstoremobile_fronend.views.activitys;
 
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.milkstoremobile_fronend.Fragment.CartFragment;
+import com.milkstoremobile_fronend.Fragment.HomeFragment;
 import com.milkstoremobile_fronend.Fragment.CategoryFragment;
-import com.milkstoremobile_fronend.Fragment.MilkFragment;
 import com.milkstoremobile_fronend.R;
 import com.milkstoremobile_fronend.models.Login.LoginResponse;
 import com.milkstoremobile_fronend.sharereference.Cart.CartManager;
@@ -21,36 +19,39 @@ import com.milkstoremobile_fronend.views.activitys.chat.ChatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new MilkFragment()).commit();
+
+        // Hiển thị HomeFragment mặc định khi mở app
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
 
         // Kiểm tra trạng thái đăng nhập và cập nhật menu
-        // Trong onCreate:
         updateBottomNavigationMenu(bottomNavigationView);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
-            if (item.getItemId() == R.id.nav_milk) selectedFragment = new MilkFragment();
-            else if (item.getItemId() == R.id.nav_category) selectedFragment = new CategoryFragment();
-            else if (item.getItemId() == R.id.nav_cart){
+
+            if (item.getItemId() == R.id.nav_milk) {
+                // Khi bấm vào tab "Sữa", cũng hiển thị HomeFragment
+                selectedFragment = new HomeFragment();
+            } else if (item.getItemId() == R.id.nav_category) {
+                selectedFragment = new CategoryFragment();
+            } else if (item.getItemId() == R.id.nav_cart) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
-            }
-            else if (item.getItemId() == R.id.nav_chat) {
+            } else if (item.getItemId() == R.id.nav_chat) {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                 startActivity(intent);
-            }
-            else if (item.getItemId() == R.id.nav_login_logout) {
+            } else if (item.getItemId() == R.id.nav_login_logout) {
                 LoginResponse user = SharedPrefManager.getInstance(this).getUser();
                 boolean isLoggedIn = user != null && user.getCustomerId() != null;
+
                 if (isLoggedIn) {
                     logoutUser();
                     updateBottomNavigationMenu(bottomNavigationView);
@@ -65,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
             }
+
             return true;
         });
-
     }
-
 
     private void updateBottomNavigationMenu(BottomNavigationView bottomNavigationView) {
         LoginResponse user = SharedPrefManager.getInstance(this).getUser();
@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Chuyển về màn hình đăng nhập
         Intent intent = new Intent(MainActivity.this, AuthenActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa toàn bộ stack Activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish(); // Đóng MainActivity
+        finish();
     }
 }

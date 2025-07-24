@@ -1,20 +1,5 @@
 package com.milkstoremobile_fronend.views.adapters.Product;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.milkstoremobile_fronend.R;
-import com.milkstoremobile_fronend.models.Product;
-import java.util.ArrayList;
-import java.util.List;
-
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,67 +17,72 @@ import com.milkstoremobile_fronend.models.Product;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
-    private final Context context;
-    private final List<Product> productList;
-    private final OnProductClickListener listener;
+    private Context context;
+    private List<Product> products;
+    private OnProductClickListener listener;
 
-    public interface OnProductClickListener {
-        void onEditProduct(Product product);
-        void onDeleteProduct(Product product);
+    public ProductAdapter(Context context, List<Product> products, OnProductClickListener listener) {
+        this.context = context;
+        this.products = products;
+        this.listener = listener;
     }
 
-    public ProductAdapter(Context context, List<Product> productList, OnProductClickListener listener) {
+    public ProductAdapter(Context context, List<Product> products) {
         this.context = context;
-        this.productList = productList;
-        this.listener = listener;
+        this.products = products;
+        this.listener = null;
     }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_product_manage, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = productList.get(position);
+        Product product = products.get(position);
+        holder.tvName.setText(product.getProductName());
+        holder.tvPrice.setText(String.format("%.0f₫", product.getPrice()));
 
-        holder.txtProductName.setText(product.getProductName());
-        holder.txtProductPrice.setText("Giá: " + product.getPrice() + " VND");
-        holder.txtProductQuantity.setText("Số lượng: " + product.getQuantity());
-        holder.txtProductDescription.setText("Mô tả: " + product.getDescription());
+        Glide.with(context)
+                .load(product.getImage())
+                .placeholder(R.drawable.placeholder)
+                .into(holder.imgProduct);
 
-        // Load ảnh sản phẩm
-        Glide.with(context).load(product.getImage()).into(holder.imgProduct);
+        // Bắt sự kiện click nếu listener tồn tại
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onEditProduct(product); // hoặc mở chi tiết tùy bạn dùng
+            }
+        });
 
-        // Xử lý sự kiện khi nhấn sửa
-        holder.btnEditProduct.setOnClickListener(v -> listener.onEditProduct(product));
-
-        // Xử lý sự kiện khi nhấn xóa
-        holder.btnDeleteProduct.setOnClickListener(v -> listener.onDeleteProduct(product));
+        // Nếu có nút xóa/sửa thì có thể thêm onDeleteProduct, ví dụ:
+        // holder.btnDelete.setOnClickListener(v -> listener.onDeleteProduct(product));
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return products.size();
     }
 
+    // ✅ ViewHolder duy nhất
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProduct, btnEditProduct, btnDeleteProduct;
-        TextView txtProductName, txtProductPrice, txtProductQuantity, txtProductDescription;
+        ImageView imgProduct;
+        TextView tvName, tvPrice;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            txtProductName = itemView.findViewById(R.id.txtProductName);
-            txtProductPrice = itemView.findViewById(R.id.txtProductPrice);
-            txtProductQuantity = itemView.findViewById(R.id.txtProductQuantity);
-            txtProductDescription = itemView.findViewById(R.id.txtProductDescription);
-            btnEditProduct = itemView.findViewById(R.id.btnEditProduct);
-            btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct);
+            tvName = itemView.findViewById(R.id.tvProductName);
+            tvPrice = itemView.findViewById(R.id.tvProductPrice);
         }
     }
+
+    // ✅ Interface click
+    public interface OnProductClickListener {
+        void onEditProduct(Product product);
+        void onDeleteProduct(Product product);
+    }
 }
-
-

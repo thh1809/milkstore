@@ -34,7 +34,7 @@ public class MilkDetailActivity extends AppCompatActivity {
 
         imgMilk = findViewById(R.id.imgMilk);
         tvName = findViewById(R.id.tvName);
-        tvType = findViewById(R.id.tvType);
+        tvType = findViewById(R.id.recycler_view_category);
         tvPrice = findViewById(R.id.tvPrice);
         tvDetail = findViewById(R.id.tvDetail);
         btnBuy = findViewById(R.id.btnBuy);
