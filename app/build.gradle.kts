@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.cardview)
+    implementation(libs.material)
 
     implementation(libs.appcompat)
     implementation(libs.material)

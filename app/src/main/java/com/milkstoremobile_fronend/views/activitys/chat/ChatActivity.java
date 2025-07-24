@@ -16,11 +16,14 @@ import com.milkstoremobile_fronend.R;
 import com.milkstoremobile_fronend.api.ApiClient;
 import com.milkstoremobile_fronend.api.services.AiApiService;
 import com.milkstoremobile_fronend.models.message.MessageAIRequest;
+import com.milkstoremobile_fronend.models.message.MessageAiResponse;
 import com.milkstoremobile_fronend.views.adapters.Messages.MessageAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +31,7 @@ import retrofit2.Response;
 public class ChatActivity extends AppCompatActivity {
 
     private AiApiService aiApiService;
-    private List<String> messageList = new ArrayList<>();
+    private final List<String> messageList = new ArrayList<>();
     private MessageAdapter adapter;
 
     private RecyclerView recyclerView;
@@ -39,10 +42,12 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ai_chat); // layout dành riêng cho AI chat
+        setContentView(R.layout.activity_ai_chat);
 
+        // Init API service
         aiApiService = ApiClient.getAiApiService();
 
+        // Init UI
         edtMessage = findViewById(R.id.edtMessage);
         btnSend = findViewById(R.id.btnSend);
         loadingAnimation = findViewById(R.id.loadingAnimation);
@@ -53,11 +58,12 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        // Gửi tin nhắn
         btnSend.setOnClickListener(v -> {
             String content = edtMessage.getText().toString().trim();
             if (content.isEmpty()) return;
 
-            // Hiển thị tin nhắn người dùng
+            // Thêm tin nhắn người dùng
             messageList.add("Bạn: " + content);
             adapter.notifyItemInserted(messageList.size() - 1);
             recyclerView.scrollToPosition(messageList.size() - 1);
@@ -67,27 +73,55 @@ public class ChatActivity extends AppCompatActivity {
             loadingAnimation.setVisibility(View.VISIBLE);
             loadingAnimation.playAnimation();
 
-            // Gửi câu hỏi đến AI
-            aiApiService.recommendMilk(new MessageAIRequest(content)).enqueue(new Callback<String>() {
+            // Gọi AI API
+            aiApiService.recommendMilk(new MessageAIRequest(content)).enqueue(new Callback<ResponseBody>() {
+
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    loadingAnimation.setVisibility(View.GONE);
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        messageList.add("AI: " + response.body());
-                        adapter.notifyItemInserted(messageList.size() - 1);
-                        recyclerView.scrollToPosition(messageList.size() - 1);
+                        try {
+                            String result = response.body().string();
+                            Log.d("AI_RESPONSE", "AI trả lời: " + result);
+
+                            // Thêm kết quả AI vào danh sách
+                            messageList.add("AI: " + result);
+                            runOnUiThread(() -> {
+                                adapter.notifyItemInserted(messageList.size() - 1);
+                                recyclerView.scrollToPosition(messageList.size() - 1);
+                                loadingAnimation.cancelAnimation();
+                                loadingAnimation.setVisibility(View.GONE);
+                            });
+
+                        } catch (Exception e) {
+                            Log.e("AI_ERROR", "Lỗi khi đọc response", e);
+                        }
                     } else {
-                        Toast.makeText(ChatActivity.this, "AI không phản hồi!", Toast.LENGTH_SHORT).show();
+                        try {
+                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có nội dung lỗi";
+                            Log.e("AI_ERROR", "Phản hồi không hợp lệ - Code: " + response.code() + ", Body: " + errorBody);
+                        } catch (Exception e) {
+                            Log.e("AI_ERROR", "Lỗi khi đọc errorBody", e);
+                        }
                     }
                 }
 
+
+
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    loadingAnimation.setVisibility(View.GONE);
-                    Toast.makeText(ChatActivity.this, "Lỗi mạng khi gọi AI!", Toast.LENGTH_SHORT).show();
-                    Log.e("AI_ERROR", "Lỗi khi gọi API AI", t);
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("AI_ERROR", "Lỗi kết nối API: " + t.getMessage(), t);
                 }
             });
+
+
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (loadingAnimation != null) {
+            loadingAnimation.cancelAnimation();
+        }
+        super.onDestroy();
     }
 }

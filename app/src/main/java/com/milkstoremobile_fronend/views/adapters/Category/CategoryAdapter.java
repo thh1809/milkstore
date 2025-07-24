@@ -12,6 +12,8 @@ import com.milkstoremobile_fronend.R;
 import com.milkstoremobile_fronend.models.Category;
 
 import java.util.List;
+import android.text.Html;
+import android.text.Spanned;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private List<Category> categoryList;

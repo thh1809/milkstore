@@ -1,5 +1,7 @@
 package com.milkstoremobile_fronend.views.adapters.Messages;
 
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,15 +50,25 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         String msg = messages.get(position);
+
         if (holder instanceof UserMessageHolder) {
             ((UserMessageHolder) holder).tvMessage.setText(msg.replaceFirst("Bạn: ", ""));
         } else if (holder instanceof AiMessageHolder) {
-            ((AiMessageHolder) holder).tvMessage.setText(msg.replaceFirst("AI: ", ""));
+            String aiText = msg.replaceFirst("AI: ", "")
+                    .replace("\n", "<br>")                    // xuống dòng
+                    .replace("* ", "• ")                      // chuyển dấu * thành bullet
+                    .replace("**", "");                       // bỏ định dạng đậm nếu không xử lý markdown
+
+            Spanned formatted = Html.fromHtml(aiText, Html.FROM_HTML_MODE_LEGACY);
+            ((AiMessageHolder) holder).tvMessage.setText(formatted);
         }
     }
+
+
 
     @Override
     public int getItemCount() {

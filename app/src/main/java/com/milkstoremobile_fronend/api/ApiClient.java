@@ -1,7 +1,6 @@
 package com.milkstoremobile_fronend.api;
 
 import com.milkstoremobile_fronend.api.services.AiApiService;
-import com.milkstoremobile_fronend.api.services.MessageApiService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,9 +39,7 @@ public class ApiClient {
         return getClient().create(AiApiService.class);
     }
 
-    public static MessageApiService getMessageApiService() {
-        return getClient().create(MessageApiService.class);
-    }
+
 
 
 }
