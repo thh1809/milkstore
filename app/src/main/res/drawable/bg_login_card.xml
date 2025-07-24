@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFF8E1"/> <!-- Vàng kem nhạt, dễ nhìn trên nền sữa -->
+    <corners android:radius="24dp"/>
+    <stroke android:width="2dp" android:color="#A67C52"/> <!-- Viền nâu nhạt -->
+    <padding android:left="8dp" android:top="8dp" android:right="8dp" android:bottom="8dp"/>
+</shape>

@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.milkstoremobile_fronend.Fragment.CartFragment;
+//import com.milkstoremobile_fronend.Fragment.CartFragment;
 import com.milkstoremobile_fronend.Fragment.CategoryFragment;
 import com.milkstoremobile_fronend.Fragment.MilkFragment;
 import com.milkstoremobile_fronend.R;

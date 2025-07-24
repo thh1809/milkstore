@@ -59,5 +59,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public interface OnCategoryClickListener {
         void onCategoryClick(Category category);
+        // void onEditCategory(Category category);
+        // void onDeleteCategory(Category category);
     }
 }
