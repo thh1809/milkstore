@@ -19,7 +19,7 @@ public class MessageViewModel extends ViewModel {
     private final MutableLiveData<String> aiAnswer = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 
-    private final AiApiService apiService = ApiClient.getAiApiService();
+    private final AiApiService aiApiService = ApiClient.getAiApiService();
 
     public LiveData<String> getAiAnswer() {
         return aiAnswer;
@@ -40,8 +40,7 @@ public class MessageViewModel extends ViewModel {
 
         MessageAIRequest request = new MessageAIRequest(question);
 
-        // Gọi endpoint đúng
-        apiService.recommendMilk(request).enqueue(new Callback<String>() {
+        aiApiService.recommendMilk(request).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 isLoading.postValue(false);

@@ -1,6 +1,7 @@
 package com.milkstoremobile_fronend.api;
 
 import com.milkstoremobile_fronend.api.services.AiApiService;
+import com.milkstoremobile_fronend.api.services.MessageApiService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,9 +18,9 @@ public class ApiClient {
 
     private static OkHttpClient getHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)  // Kết nối chờ tối đa 60s
-                .readTimeout(60, TimeUnit.SECONDS)     // Đọc dữ liệu tối đa 60s
-                .writeTimeout(60, TimeUnit.SECONDS)    // Gửi dữ liệu tối đa 60s
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
     }
 
@@ -27,7 +28,7 @@ public class ApiClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(getHttpClient()) // Dùng client có timeout
+                    .client(getHttpClient())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -35,8 +36,13 @@ public class ApiClient {
         return retrofit;
     }
 
-
     public static AiApiService getAiApiService() {
         return getClient().create(AiApiService.class);
     }
+
+    public static MessageApiService getMessageApiService() {
+        return getClient().create(MessageApiService.class);
+    }
+
+
 }

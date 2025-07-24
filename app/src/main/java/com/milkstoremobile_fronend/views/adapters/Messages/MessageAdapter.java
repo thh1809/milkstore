@@ -4,9 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.milkstoremobile_fronend.R;
+
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -23,7 +26,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemViewType(int position) {
         String msg = messages.get(position);
-        // Quy ước: tin nhắn người dùng bắt đầu bằng "Bạn: ", AI bắt đầu bằng "AI: "
         if (msg.startsWith("Bạn:")) {
             return TYPE_USER;
         } else {

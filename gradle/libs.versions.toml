@@ -13,11 +13,7 @@ legacySupportV4 = "1.0.0"
 retrofit = "2.9.0"
 retrofitScalars = "2.9.0"
 
-# STOMP & Rx
-#stomp = "1.6.6"
-#
-#rxjava = "2.2.21"
-#rxandroid = "2.1.1"
+
 
 # Room
 room = "2.5.2"
@@ -31,6 +27,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
 [libraries]
+
 lottie = { module = "com.airbnb.android:lottie", version = "6.1.0" }
 
 # Core UI
@@ -54,10 +51,6 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
-# STOMP & Rx
-#stomp = { group = "ua.naiksoftware", name = "stomp-android", version.ref = "stomp" }
-#rxjava = { group = "io.reactivex.rxjava2", name = "rxjava", version.ref = "rxjava" }
-#rxandroid = { group = "io.reactivex.rxjava2", name = "rxandroid", version.ref = "rxandroid" }
 
 
 

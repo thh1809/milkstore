@@ -44,7 +44,9 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
     implementation(libs.legacy.support.v4)
+
     implementation(libs.lottie)
+
 
 
 
@@ -54,9 +56,8 @@ dependencies {
     implementation(libs.retrofit.converter.scalars)
 
     // STOMP + RxJava
-//    implementation(libs.stomp)
-//    implementation(libs.rxjava)
-//    implementation(libs.rxandroid)
+
+
 
     // Room
     implementation(libs.room.runtime)
