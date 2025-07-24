@@ -1,0 +1,28 @@
+* [33m280296a[m[33m ([m[1;31morigin/phuoc[m[33m)[m Resolve merge conflicts
+* [33mb609f15[m update
+[31m|[m *   [33m1b431d1[m[33m ([m[1;32mmain[m[33m)[m push code lên branch linh
+[31m|[m [32m|[m[33m\[m  
+[31m|[m * [33m|[m [33m62295ae[m UI role admin
+[31m|[m [33m|[m [33m|[m * [33m5ccdf08[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlinh[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/linh[m[33m, [m[1;31morigin/dev[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #4 from thh1809/hai
+[31m|[m [33m|[m [33m|[m[33m/[m[35m|[m 
+[31m|[m [33m|[m [33m|[m * [33m78986d2[m[33m ([m[1;31morigin/hai[m[33m)[m  update AI chat
+[31m|[m [33m|[m [33m|[m[33m/[m  
+[31m|[m [33m|[m *   [33meb8ed0e[m Resolve merge and update files
+[31m|[m [33m|[m [36m|[m[1;31m\[m  
+[31m|[m [33m|[m [36m|[m *   [33m649cd7f[m Merge pull request #2 from thh1809/phuoc
+[31m|[m [33m|[m [36m|[m [1;32m|[m[31m\[m  
+[31m|[m [33m|[m[31m_[m[36m|[m[31m_[m[1;32m|[m[31m/[m  
+[31m|[m[31m/[m[33m|[m [36m|[m [1;32m|[m   
+* [33m|[m [36m|[m [1;32m|[m [33m2944fed[m sua lai giao dien app
+[33m|[m[33m/[m [36m/[m [1;32m/[m  
+[33m|[m [36m|[m * [33md00bc72[m Your commit message
+[33m|[m [36m|[m[33m/[m  
+[33m|[m[33m/[m[36m|[m   
+* [36m|[m   [33m88a77fa[m[33m ([m[1;31morigin/dung[m[33m)[m Merge pull request #1 from soilangtu/Dung
+[1;34m|[m[1;35m\[m [36m\[m  
+[1;34m|[m * [36m|[m [33mee5bf59[m thanh toan
+[1;34m|[m[1;34m/[m [36m/[m  
+* [36m/[m [33m249f13c[m Initial commit
+ [36m/[m  
+* [33mdc094aa[m Push lần đầu từ Android Studio với đầy đủ file
+* [33md7f62cd[m Initial commit
