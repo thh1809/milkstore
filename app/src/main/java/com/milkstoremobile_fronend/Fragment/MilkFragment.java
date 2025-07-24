@@ -1,9 +1,12 @@
 package com.milkstoremobile_fronend.Fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -11,14 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.milkstoremobile_fronend.views.adapters.Product.MilkAdapter;
 import com.milkstoremobile_fronend.R;
 import com.milkstoremobile_fronend.viewmodels.ProductViewModel;
+import com.milkstoremobile_fronend.models.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MilkFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -33,7 +39,8 @@ public class MilkFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerViewMilk);
         progressBar = view.findViewById(R.id.progressBar);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        EditText edtSearchMilk = view.findViewById(R.id.edtSearchMilk);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 2 cột
 
         milkAdapter = new MilkAdapter(getContext(), new ArrayList<>(), false);
         recyclerView.setAdapter(milkAdapter);
@@ -56,7 +63,31 @@ public class MilkFragment extends Fragment {
         // Luôn fetch data khi mở Fragment
         productViewModel.fetchProducts();
 
+        edtSearchMilk.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterMilkList(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         return view;
+    }
+
+    // Thêm hàm filterMilkList vào MilkFragment:
+    private void filterMilkList(String query) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : milkAdapter.getAllProducts()) { // getAllProducts là list gốc
+            if (product.getProductName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(product);
+            }
+        }
+        milkAdapter.updateData(filteredList);
     }
 }
 

@@ -37,6 +37,25 @@
             android:text="Giá: 0đ"
             android:textSize="14sp"
            />
+
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mô tả sản phẩm"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:id="@+id/tvProductStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái"
+            android:textSize="13sp"
+            android:textColor="@color/green"
+            android:textStyle="italic"/>
     </LinearLayout>
 
     <TextView

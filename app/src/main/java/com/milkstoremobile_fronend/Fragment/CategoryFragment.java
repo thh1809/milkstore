@@ -1,6 +1,7 @@
 package com.milkstoremobile_fronend.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class CategoryFragment extends Fragment {
                 filterMilkByPrice("Dưới 200.000₫");
             } else if (checkedId == R.id.chip200to500) {
                 filterMilkByPrice("200.000₫ - 500.000₫");
-            } else if (checkedId == R.id.chip500to1mil) {
+            } else if (checkedId == R.id.chip500to1m) {
                 filterMilkByPrice("500.000₫ - 1.000.000₫");
             }
         });
@@ -82,10 +83,14 @@ public class CategoryFragment extends Fragment {
     private void filterMilkByPrice(String priceRange) {
         filteredMilkList.clear();
         List<Product> allProducts = productViewModel.getProducts().getValue();
-        if (allProducts == null) return;
+        if (allProducts == null) {
+            Log.e("CategoryFragment", "allProducts is null");
+            return;
+        }
 
         for (Product milk : allProducts) {
-            double price = milk.getPrice(); // VND
+            if (milk == null) continue;
+            double price = milk.getPrice();
 
             if (priceRange.equals("Dưới 200.000₫") && price < 200000) {
                 filteredMilkList.add(milk);

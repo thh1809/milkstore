@@ -10,6 +10,26 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh sách sản phẩm sữa"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textColor="@color/teal_700"/>
+
+    <EditText
+        android:id="@+id/edtSearchMilk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tìm kiếm sản phẩm..."
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:padding="12dp"
+        android:background="@drawable/bg_input_field" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMilk"
         android:layout_width="match_parent"

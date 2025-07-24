@@ -12,4 +12,6 @@
 
     <!-- Màu phụ -->
     <color name="colorSecondary">#5BCAFD</color> <!-- Xanh nhạt hơn -->
+    <color name="teal_700">#018786</color>
+    <color name="green">#388E3C</color>
 </resources>

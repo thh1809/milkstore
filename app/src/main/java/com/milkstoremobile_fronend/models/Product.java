@@ -10,6 +10,7 @@ public class Product implements Serializable {
     private String description;
     private String categoryId;
     private String image;
+    private String statusDescription;
 
     // Constructor mặc định
 
@@ -108,6 +109,14 @@ public class Product implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 
     @Override

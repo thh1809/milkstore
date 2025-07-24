@@ -1,6 +1,7 @@
 package com.milkstoremobile_fronend.views.adapters.Product;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +39,16 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
         holder.tvProductName.setText(product.getProductName());
         holder.tvProductPrice.setText("Giá: " + product.getPrice() + "đ");
         holder.tvProductQuantity.setText("x" + product.getQuantity());
+        holder.tvProductDescription.setText(product.getDescription());
+        holder.tvProductStatus.setText(product.getStatusDescription());
 
-        // Load ảnh từ URL (dùng Glide)
+        Log.d("MilkAdapter", "desc=" + product.getDescription() + ", status=" + product.getStatusDescription());
+
         Glide.with(context)
                 .load(product.getImage())
                 .placeholder(R.drawable.icon_product)
                 .into(holder.imgProduct);
+
     }
 
     @Override
@@ -53,7 +58,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
-        TextView tvProductName, tvProductPrice, tvProductQuantity;
+        TextView tvProductName, tvProductPrice, tvProductQuantity, tvProductDescription, tvProductStatus;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +66,8 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
             tvProductQuantity = itemView.findViewById(R.id.tvProductQuantity);
+            tvProductDescription = itemView.findViewById(R.id.tvProductDescription);
+            tvProductStatus = itemView.findViewById(R.id.tvProductStatus);
         }
     }
 
@@ -70,4 +77,3 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
         notifyDataSetChanged();
     }
 }
-

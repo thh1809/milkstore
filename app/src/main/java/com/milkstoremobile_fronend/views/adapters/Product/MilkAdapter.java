@@ -30,12 +30,13 @@ public class MilkAdapter extends RecyclerView.Adapter<MilkAdapter.MilkViewHolder
     private List<Product> milkList;
     private boolean isCategoryMode; // Kiểm tra đang ở CategoryFragment hay MilkFragment
     private static List<Product> cartList = new ArrayList<>(); // Danh sách giỏ hàng
-
+    private List<Product> originalList = new ArrayList<>();
 
     public MilkAdapter(Context context, List<Product> productList, boolean isCategoryMode) {
         this.context = context;
         this.milkList = productList;
-        this.isCategoryMode = isCategoryMode; // Nhận giá trị từ Fragment
+        this.originalList = new ArrayList<>(productList); // Lưu list gốc
+        this.isCategoryMode = isCategoryMode;
     }
 
     @NonNull
@@ -87,10 +88,18 @@ public class MilkAdapter extends RecyclerView.Adapter<MilkAdapter.MilkViewHolder
             });
         }
     }
+
     public void updateData(List<Product> newMilkList) {
         this.milkList = newMilkList;
+        this.originalList = new ArrayList<>(newMilkList); // Nếu muốn reset list gốc
         notifyDataSetChanged();
     }
+
+    public void filterList(List<Product> filteredList) {
+        this.milkList = filteredList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return milkList.size();
@@ -98,6 +107,10 @@ public class MilkAdapter extends RecyclerView.Adapter<MilkAdapter.MilkViewHolder
 
     public static List<Product> getCartList() {
         return cartList;
+    }
+
+    public List<Product> getAllProducts() {
+        return originalList;
     }
 
     public static class MilkViewHolder extends RecyclerView.ViewHolder {
