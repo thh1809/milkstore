@@ -10,6 +10,7 @@ import com.milkstoremobile_fronend.api.ApiClient;
 import com.milkstoremobile_fronend.api.services.AiApiService;
 import com.milkstoremobile_fronend.models.message.MessageAIRequest;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,22 +41,28 @@ public class MessageViewModel extends ViewModel {
 
         MessageAIRequest request = new MessageAIRequest(question);
 
-        aiApiService.recommendMilk(request).enqueue(new Callback<String>() {
+        aiApiService.recommendMilk(request).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 isLoading.postValue(false);
                 if (response.isSuccessful() && response.body() != null) {
-                    aiAnswer.postValue(response.body());
+                    try {
+                        String result = response.body().string();
+                        aiAnswer.postValue(result);
+                    } catch (Exception e) {
+                        aiAnswer.postValue("Lỗi đọc dữ liệu phản hồi từ AI.");
+                        Log.e("AI", "Lỗi đọc response", e);
+                    }
                 } else {
                     aiAnswer.postValue("AI không có phản hồi.");
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 isLoading.postValue(false);
                 aiAnswer.postValue("Lỗi khi kết nối AI: " + t.getMessage());
-                Log.e("AI", "Lỗi: ", t);
+                Log.e("AI", "Lỗi kết nối", t);
             }
         });
     }

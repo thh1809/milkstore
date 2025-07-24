@@ -11,3 +11,4 @@ public class MessageAiResponse {
         this.answer = answer;
     }
 }
+
